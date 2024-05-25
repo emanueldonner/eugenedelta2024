@@ -82,6 +82,18 @@
 			.playlist li.active {
 				background-color: rgba(255, 255, 255, 0.6);
 				color: #111;
+				animation: pulse 4s infinite;
+			}
+			@keyframes pulse {
+				0% {
+					background-color: rgba(255, 255, 255, 0.6);
+				}
+				50% {
+					background-color: rgba(255, 255, 255, 0.4);
+				}
+				100% {
+					background-color: rgba(255, 255, 255, 0.6);
+				}
 			}
 
 			.audio-controls {
@@ -97,6 +109,9 @@
 				cursor: pointer;
 				color: #111;
 				font-size: 1.5rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 			}
 
 			.progress-bar {
@@ -128,7 +143,7 @@
 				grid-gap: 1rem;
 				padding: 2rem;
 				width: 80%;
-				/* height: 100%; */
+				/* max-height: 80%; */
 			}
 			.thumbnail {
 				width: 100%;
@@ -211,16 +226,13 @@
 			.bottom-right {
 				grid-column: 2;
 				grid-row: 2;
-				color: white;
-				padding: 2rem;
 				display: flex;
 				flex-direction: column;
-				align-items: flex-start;
+				align-items: center;
 				justify-content: space-between;
-
-				& small {
-					font-weight: normal;
-				}
+				position: relative;
+				overflow: hidden;
+				height: 100%;
 			}
 			.thumbnail-container {
 				max-width: 100%;
@@ -240,6 +252,51 @@
 				color: rgb(237, 115, 111);
 			}
 
+			.carousel {
+				width: 100%;
+				max-width: 600px;
+				position: relative;
+			}
+
+			.carousel-inner {
+				display: flex;
+				transition: transform 0.5s ease;
+			}
+
+			.carousel-item {
+				min-width: 100%;
+				box-sizing: border-box;
+				position: relative;
+				padding-bottom: 56.25%; /* 16:9 aspect ratio */
+				height: 0;
+				overflow: hidden;
+			}
+
+			.carousel-item iframe {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+
+			.carousel-controls {
+				position: absolute;
+				top: 50%;
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+				transform: translateY(-50%);
+			}
+
+			.carousel-control {
+				background: rgba(0, 0, 0, 0.5);
+				border: none;
+				color: white;
+				padding: 10px;
+				cursor: pointer;
+			}
+
 			/* Mobile View */
 			@media (max-width: 768px) {
 				.main-container {
@@ -257,8 +314,8 @@
 				.top-left {
 					padding: 1rem 2rem;
 					order: 2;
-					align-items: center;
-					justify-content: center;
+					align-items: flex-start;
+					justify-content: flex-start;
 				}
 
 				.top-right {
@@ -267,10 +324,15 @@
 
 				.bottom-right {
 					order: 4;
+					padding: 1rem 0;
+				}
+				.carousel {
+					width: 100%;
 				}
 
 				.bottom-left {
 					order: 3;
+					padding: 0;
 				}
 
 				.modal-content {
@@ -283,12 +345,20 @@
 	<body>
 		<div class="main-container">
 			<div class="section top-left">
+				<ul>
+					<li><a href="">Spotify</a></li>
+					<li><a href="">Apple Music</a></li>
+					<li><a href="">Bandcamp</a></li>
+					<li><a href="">Instagram</a></li>
+					<li><a href="">Contact</a></li>
+				</ul>
 				<h1>Eugene Delta</h1>
 			</div>
 			<div class="section top-right">
 				<div class="audio-player">
 					<ul class="playlist">
 						<li
+							class="active"
 							onclick="loadSong('assets/audio/02 - Bad Jazz.mp3', 'Bad Jazz', this)"
 						>
 							Bad Jazz
@@ -325,15 +395,21 @@
 						</li>
 					</ul>
 					<div class="audio-controls">
-						<button class="play-button" onclick="togglePlay()">&#9658;</button>
+						<button class="play-button" onclick="togglePlay()">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="1em"
+								height="1em"
+								viewBox="0 0 24 24"
+							>
+								<path fill="currentColor" d="M8 5.14v14l11-7z" />
+							</svg>
+						</button>
 						<div class="progress-bar" onclick="setProgress(event)">
 							<div class="progress" id="progress"></div>
 						</div>
 					</div>
-					<audio
-						id="audio"
-						src="assets/audio/yesterdays dream live.wav"
-					></audio>
+					<audio id="audio" src="assets/audio/02 - Bad Jazz.mp3"></audio>
 				</div>
 			</div>
 			<div class="section bottom-left">
@@ -377,13 +453,54 @@
 				</div>
 			</div>
 			<div class="section bottom-right">
-				<ul>
-					<li><a href="">Spotify</a></li>
-					<li><a href="">Apple Music</a></li>
-					<li><a href="">Bandcamp</a></li>
-					<li><a href="">Instagram</a></li>
-					<li><a href="">Contact</a></li>
-				</ul>
+				<div class="carousel">
+					<div class="carousel-inner" id="carousel-inner">
+						<div class="carousel-item">
+							<iframe
+								width="560"
+								height="315"
+								src="https://www.youtube.com/embed/-8y5n1lAC5k?si=lAd6Zn3G0SeEwYUe&amp;controls=0"
+								title="YouTube video player"
+								frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+								referrerpolicy="strict-origin-when-cross-origin"
+								allowfullscreen
+							></iframe>
+						</div>
+						<div class="carousel-item">
+							<iframe
+								width="560"
+								height="315"
+								src="https://www.youtube.com/embed/OQTTZwLRB2A?si=ZKD4ecmxjn2byjIo&amp;controls=0"
+								title="YouTube video player"
+								frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+								referrerpolicy="strict-origin-when-cross-origin"
+								allowfullscreen
+							></iframe>
+						</div>
+						<div class="carousel-item">
+							<iframe
+								width="560"
+								height="315"
+								src="https://www.youtube.com/embed/CQoadhcEch0?si=goSEbPEZwjhnIm9J&amp;controls=0"
+								title="YouTube video player"
+								frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+								referrerpolicy="strict-origin-when-cross-origin"
+								allowfullscreen
+							></iframe>
+						</div>
+					</div>
+					<div class="carousel-controls">
+						<button class="carousel-control" onclick="prevSlide()">
+							&#10094;
+						</button>
+						<button class="carousel-control" onclick="nextSlide()">
+							&#10095;
+						</button>
+					</div>
+				</div>
 				<small>Copyright © 2024 Eugene Delta</small>
 			</div>
 		</div>
@@ -402,10 +519,18 @@
 			function togglePlay() {
 				if (audio.paused) {
 					audio.play()
-					playButton.innerHTML = "&#10074;&#10074;" // Pause icon
+					playButton.innerHTML =
+						'<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M14 19V5h4v14zm-8 0V5h4v14z"/></svg>' // Pause icon
 				} else {
 					audio.pause()
-					playButton.innerHTML = "&#9658;" // Play icon
+					playButton.innerHTML = `<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="1em"
+								height="1em"
+								viewBox="0 0 24 24"
+							>
+								<path fill="currentColor" d="M8 5.14v14l11-7z" />
+							</svg>` // Play icon
 				}
 			}
 
@@ -425,7 +550,8 @@
 			function loadSong(src, title, element) {
 				audio.src = src
 				audio.play()
-				playButton.innerHTML = "&#10074;&#10074;" // Pause icon
+				playButton.innerHTML =
+					'<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M14 19V5h4v14zm-8 0V5h4v14z"/></svg>' // Pause icon
 				playlistItems.forEach((item) => item.classList.remove("active"))
 				element.classList.add("active")
 			}
@@ -437,6 +563,31 @@
 
 			function closeModal() {
 				document.getElementById("myModal").style.display = "none"
+			}
+
+			// Carousel functionality
+			let currentSlide = 0
+			const slides = document.querySelectorAll(".carousel-item")
+
+			function showSlide(index) {
+				if (index >= slides.length) {
+					currentSlide = 0
+				} else if (index < 0) {
+					currentSlide = slides.length - 1
+				} else {
+					currentSlide = index
+				}
+				document.getElementById(
+					"carousel-inner"
+				).style.transform = `translateX(-${currentSlide * 100}%)`
+			}
+
+			function nextSlide() {
+				showSlide(currentSlide + 1)
+			}
+
+			function prevSlide() {
+				showSlide(currentSlide - 1)
 			}
 		</script>
 	</body>
