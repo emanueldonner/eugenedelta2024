@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Eugene Delta</title>
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Young+Serif&display=swap");
+
+			body {
+				margin: 0;
+				padding: 0;
+				background-color: #111;
+				color: white;
+				font-family: "Young Serif", cursive;
+			}
+
+			.main-container {
+				width: 100vw;
+				height: 100vh;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				grid-template-rows: 1fr 1fr;
+			}
+
+			.section {
+				padding: 2rem;
+				box-sizing: border-box;
+			}
+
+			.top-left {
+				grid-column: 1;
+				grid-row: 1;
+				display: flex;
+				padding: 1rem 3rem;
+				flex-direction: column;
+				align-items: flex-end;
+				justify-content: flex-end;
+			}
+
+			h1 {
+				font-size: 3rem;
+				font-weight: bold;
+				text-transform: uppercase;
+				margin: 0;
+			}
+			h1:hover {
+				color: RGBA(95, 183, 168, 1);
+			}
+
+			.top-right {
+				grid-column: 2;
+				grid-row: 1;
+				background-color: RGBA(237, 115, 111, 1);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: flex-end;
+				/* border-top-right-radius: 8rem; */
+			}
+
+			.audio-player {
+				width: 100%;
+				/* max-width: 300px; */
+				text-align: center;
+			}
+
+			.playlist {
+				margin-bottom: 1rem;
+			}
+
+			.playlist li {
+				cursor: pointer;
+				padding: 0.5rem;
+				border-bottom: 1px solid white;
+			}
+
+			.playlist li:hover,
+			.playlist li.active {
+				background-color: rgba(255, 255, 255, 0.1);
+			}
+
+			.audio-controls {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 1rem;
+			}
+
+			.play-button {
+				background: none;
+				border: none;
+				cursor: pointer;
+				color: #111;
+				font-size: 1.5rem;
+			}
+
+			.progress-bar {
+				width: 100%;
+				height: 4px;
+				background-color: #111;
+				cursor: pointer;
+				position: relative;
+			}
+
+			.progress {
+				height: 100%;
+				background-color: white;
+				width: 0;
+			}
+
+			.bottom-left {
+				grid-column: 1;
+				grid-row: 2;
+				background-color: RGBA(95, 183, 168, 1);
+				display: flex;
+				/* flex-direction: column; */
+				align-items: center;
+				justify-content: center;
+			}
+			.thumbnail-container {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				grid-gap: 1rem;
+				padding: 2rem;
+				width: 100%;
+				/* height: 100%; */
+				max-width: 500px;
+			}
+			.thumbnail {
+				width: 100%;
+				height: 0;
+				padding-bottom: 100%; /* This makes the div square */
+				position: relative;
+				overflow: hidden;
+				filter: grayscale(100%) brightness(0.7);
+				cursor: pointer;
+				transition: filter 0.3s ease;
+				mix-blend-mode: multiply;
+			}
+			.thumbnail img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			.thumbnail:hover {
+				filter: none;
+				mix-blend-mode: normal;
+			}
+
+			.modal {
+				display: none;
+				align-items: center;
+				justify-content: center;
+				position: fixed;
+				z-index: 1;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgb(0, 0, 0);
+				background-color: rgba(0, 0, 0, 0.9);
+			}
+
+			.modal-content {
+				margin: auto;
+				display: block;
+				width: 80%;
+				max-width: 700px;
+			}
+
+			.modal-content,
+			.close {
+				animation-name: zoom;
+				animation-duration: 0.6s;
+			}
+
+			@keyframes zoom {
+				from {
+					transform: scale(0);
+				}
+				to {
+					transform: scale(1);
+				}
+			}
+
+			.close {
+				position: absolute;
+				top: 15px;
+				right: 35px;
+				color: #f1f1f1;
+				font-size: 40px;
+				font-weight: bold;
+				transition: 0.3s;
+			}
+
+			.close:hover,
+			.close:focus {
+				color: #bbb;
+				text-decoration: none;
+				cursor: pointer;
+			}
+			.bottom-right {
+				grid-column: 2;
+				grid-row: 2;
+				color: white;
+				padding: 2rem;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				justify-content: space-between;
+
+				& small {
+					font-weight: normal;
+				}
+			}
+			.thumbnail-container {
+				max-width: 100%;
+				padding: 0;
+			}
+			ul {
+				list-style: none;
+				padding: 0;
+			}
+
+			a {
+				color: white;
+				text-decoration: none;
+				font-size: 1.5rem;
+			}
+			a:hover {
+				color: rgb(237, 115, 111);
+			}
+
+			/* Mobile View */
+			@media (max-width: 768px) {
+				.main-container {
+					display: flex;
+					flex-direction: column;
+					/* width: 100%; */
+					height: auto;
+				}
+
+				.section {
+					width: 100%;
+					min-height: 18rem;
+				}
+
+				.top-left {
+					padding: 1rem 2rem;
+					order: 2;
+					align-items: center;
+					justify-content: center;
+				}
+
+				.top-right {
+					order: 1;
+				}
+
+				.bottom-right {
+					order: 4;
+				}
+
+				.bottom-left {
+					order: 3;
+				}
+
+				.modal-content {
+					width: 100%;
+					max-width: 100%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main-container">
+			<div class="section top-left">
+				<h1>Eugene Delta</h1>
+			</div>
+			<div class="section top-right">
+				<div class="audio-player">
+					<ul class="playlist">
+						<li
+							onclick="loadSong('assets/audio/quidproquo live.wav', 'Quid Pro Quo Live', this)"
+						>
+							Quid Pro Quo Live
+						</li>
+						<li
+							onclick="loadSong('assets/audio/sirens call live3.wav', 'Sirens Call Live', this)"
+						>
+							Sirens Call Live
+						</li>
+						<li
+							onclick="loadSong('assets/audio/yesterdays dream live.wav', 'Yesterday\'s Dream Live', this)"
+						>
+							Yesterdays Dream Live
+						</li>
+					</ul>
+					<div class="audio-controls">
+						<button class="play-button" onclick="togglePlay()">&#9658;</button>
+						<div class="progress-bar" onclick="setProgress(event)">
+							<div class="progress" id="progress"></div>
+						</div>
+					</div>
+					<audio
+						id="audio"
+						src="assets/audio/yesterdays dream live.wav"
+					></audio>
+				</div>
+			</div>
+			<div class="section bottom-left">
+				<div class="thumbnail-container">
+					<div class="thumbnail">
+						<img
+							src="https://picsum.photos/200/300"
+							onclick="openModal(this.src)"
+						/>
+					</div>
+					<div class="thumbnail">
+						<img
+							src="https://picsum.photos/200/200"
+							onclick="openModal(this.src)"
+						/>
+					</div>
+					<div class="thumbnail">
+						<img
+							src="https://picsum.photos/300/300"
+							onclick="openModal(this.src)"
+						/>
+					</div>
+					<div class="thumbnail">
+						<img
+							src="https://picsum.photos/260/300"
+							onclick="openModal(this.src)"
+						/>
+					</div>
+					<div class="thumbnail">
+						<img
+							src="https://picsum.photos/400/300"
+							onclick="openModal(this.src)"
+						/>
+					</div>
+					<div class="thumbnail">
+						<img
+							src="https://picsum.photos/500/300"
+							onclick="openModal(this.src)"
+						/>
+					</div>
+				</div>
+			</div>
+			<div class="section bottom-right">
+				<ul>
+					<li><a href="">Spotify</a></li>
+					<li><a href="">Apple Music</a></li>
+					<li><a href="">Bandcamp</a></li>
+					<li><a href="">Instagram</a></li>
+					<li><a href="">Contact</a></li>
+				</ul>
+				<small>Copyright © 2024 Eugene Delta</small>
+			</div>
+		</div>
+		<!-- The Modal -->
+		<div id="myModal" class="modal">
+			<span class="close" onclick="closeModal()">&times;</span>
+			<img class="modal-content" id="img01" />
+		</div>
+		<script>
+			const audio = document.getElementById("audio")
+			const playButton = document.querySelector(".play-button")
+			const progress = document.getElementById("progress")
+			const progressBar = document.querySelector(".progress-bar")
+			const playlistItems = document.querySelectorAll(".playlist li")
+
+			function togglePlay() {
+				if (audio.paused) {
+					audio.play()
+					playButton.innerHTML = "&#10074;&#10074;" // Pause icon
+				} else {
+					audio.pause()
+					playButton.innerHTML = "&#9658;" // Play icon
+				}
+			}
+
+			audio.addEventListener("timeupdate", () => {
+				const progressPercent = (audio.currentTime / audio.duration) * 100
+				progress.style.width = `${progressPercent}%`
+			})
+
+			function setProgress(event) {
+				const width = progressBar.clientWidth
+				const clickX = event.offsetX
+				const duration = audio.duration
+
+				audio.currentTime = (clickX / width) * duration
+			}
+
+			function loadSong(src, title, element) {
+				audio.src = src
+				audio.play()
+				playButton.innerHTML = "&#10074;&#10074;" // Pause icon
+				playlistItems.forEach((item) => item.classList.remove("active"))
+				element.classList.add("active")
+			}
+
+			function openModal(src) {
+				document.getElementById("myModal").style.display = "flex"
+				document.getElementById("img01").src = src
+			}
+
+			function closeModal() {
+				document.getElementById("myModal").style.display = "none"
+			}
+		</script>
+	</body>
+</html>
