@@ -26,6 +26,7 @@
 			.section {
 				padding: 2rem;
 				box-sizing: border-box;
+				flex: 1;
 			}
 
 			.top-left {
@@ -75,9 +76,12 @@
 				border-bottom: 1px solid white;
 			}
 
-			.playlist li:hover,
-			.playlist li.active {
+			.playlist li:hover {
 				background-color: rgba(255, 255, 255, 0.1);
+			}
+			.playlist li.active {
+				background-color: rgba(255, 255, 255, 0.6);
+				color: #111;
 			}
 
 			.audio-controls {
@@ -123,9 +127,8 @@
 				grid-template-columns: repeat(3, 1fr);
 				grid-gap: 1rem;
 				padding: 2rem;
-				width: 100%;
+				width: 80%;
 				/* height: 100%; */
-				max-width: 500px;
 			}
 			.thumbnail {
 				width: 100%;
@@ -286,19 +289,39 @@
 				<div class="audio-player">
 					<ul class="playlist">
 						<li
-							onclick="loadSong('assets/audio/quidproquo live.wav', 'Quid Pro Quo Live', this)"
+							onclick="loadSong('assets/audio/02 - Bad Jazz.mp3', 'Bad Jazz', this)"
 						>
-							Quid Pro Quo Live
+							Bad Jazz
 						</li>
 						<li
-							onclick="loadSong('assets/audio/sirens call live3.wav', 'Sirens Call Live', this)"
+							onclick="loadSong('assets/audio/04 - Balada Of A Rainy Fall.mp3', 'Balada Of A Rainy Fall', this)"
 						>
-							Sirens Call Live
+							Balada Of A Rainy Fall
 						</li>
 						<li
-							onclick="loadSong('assets/audio/yesterdays dream live.wav', 'Yesterday\'s Dream Live', this)"
+							onclick="loadSong('assets/audio/Oblivion.mp3', 'Oblivion', this)"
 						>
-							Yesterdays Dream Live
+							Oblivion
+						</li>
+						<li
+							onclick="loadSong('assets/audio/11 - Spring Is Dead.mp3', 'Spring Is Dead', this)"
+						>
+							Spring Is Dead
+						</li>
+						<li
+							onclick="loadSong('assets/audio/12 - Centrepiece.mp3', 'Centrepiece', this)"
+						>
+							Centrepiece
+						</li>
+						<li
+							onclick="loadSong('assets/audio/My Heart Feels Like A Bottle Of Lotion.mp3', 'My Heart Feels Like A Bottle Of Lotion', this)"
+						>
+							My Heart Feels Like A Bottle Of Lotion
+						</li>
+						<li
+							onclick="loadSong('assets/audio/Eugene Delta - Siren Call.mp3', 'Siren Call', this)"
+						>
+							Siren Call
 						</li>
 					</ul>
 					<div class="audio-controls">
