@@ -181,10 +181,10 @@ h1:hover {
 	padding-bottom: 100%; /* This makes the div square */
 	position: relative;
 	overflow: hidden;
-	filter: grayscale(100%) brightness(0.7);
+	filter: grayscale(100%);
 	cursor: pointer;
 	transition: filter 0.3s ease;
-	mix-blend-mode: multiply;
+	mix-blend-mode: hard-light;
 }
 .thumbnail img {
 	position: absolute;
