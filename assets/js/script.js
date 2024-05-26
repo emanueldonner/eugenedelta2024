@@ -131,3 +131,42 @@ function prevSlide() {
 document.addEventListener("DOMContentLoaded", () => {
 	showSlide(0) // Show the first slide initially
 })
+
+// Modal carousel functionality
+
+document.addEventListener("DOMContentLoaded", () => {
+	showSlide(0) // Show the first slide initially
+
+	modalImages = document.querySelectorAll(".thumbnail img")
+})
+
+function openModal(index) {
+	currentModalSlide = index
+	updateModal()
+	const modal = document.getElementById("myModal")
+	modal.style.display = "flex"
+}
+
+function closeModal() {
+	const modal = document.getElementById("myModal")
+	modal.style.display = "none"
+}
+
+function updateModal() {
+	const modalImg = document.getElementById("img01")
+	const copyrightLabel = document.getElementById("copyrightLabel")
+	const img = modalImages[currentModalSlide]
+	modalImg.src = img.src
+	copyrightLabel.textContent = img.getAttribute("data-copyright")
+}
+
+function nextModalSlide() {
+	currentModalSlide = (currentModalSlide + 1) % modalImages.length
+	updateModal()
+}
+
+function prevModalSlide() {
+	currentModalSlide =
+		(currentModalSlide - 1 + modalImages.length) % modalImages.length
+	updateModal()
+}
