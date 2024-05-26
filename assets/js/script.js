@@ -128,24 +128,21 @@ function prevSlide() {
 	showSlide(currentSlide - 1)
 }
 
+// Modal carousel functionality
+let currentModalSlide = 0
+let modalImages = []
 document.addEventListener("DOMContentLoaded", () => {
 	showSlide(0) // Show the first slide initially
 
+	modalImages = document.querySelectorAll(".thumbnail img")
+
 	// Add touch event listeners for swipe functionality on the image carousel
-	const imageCarousel = document.querySelector(".thumbnail-container")
+	const imageCarousel = document.querySelector(".modal-content")
 	addSwipeListeners(imageCarousel, prevModalSlide, nextModalSlide)
 
 	// Add touch event listeners for swipe functionality on the video carousel
 	const videoCarousel = document.querySelector(".carousel-inner")
 	addSwipeListeners(videoCarousel, prevSlide, nextSlide)
-})
-
-// Modal carousel functionality
-
-document.addEventListener("DOMContentLoaded", () => {
-	showSlide(0) // Show the first slide initially
-
-	modalImages = document.querySelectorAll(".thumbnail img")
 })
 
 function openModal(index) {
@@ -194,10 +191,10 @@ function addSwipeListeners(element, onSwipeLeft, onSwipeRight) {
 	})
 
 	function handleSwipeGesture() {
-		if (touchendX < touchstartX) {
+		if (touchendX > touchstartX) {
 			onSwipeLeft()
 		}
-		if (touchendX > touchstartX) {
+		if (touchendX < touchstartX) {
 			onSwipeRight()
 		}
 	}
