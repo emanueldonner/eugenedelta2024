@@ -95,6 +95,7 @@ h1 {
 	font-weight: bold;
 	text-transform: uppercase;
 	margin: 0;
+	text-align: right;
 }
 h1:hover {
 	color: var(--color-primary);
@@ -448,6 +449,9 @@ a:hover {
 		align-items: flex-start;
 		justify-content: flex-start;
 		flex-flow: column-reverse;
+	}
+	h1 {
+		text-align: left;
 	}
 
 	.top-center {
