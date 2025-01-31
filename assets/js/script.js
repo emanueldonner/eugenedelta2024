@@ -199,3 +199,6 @@ function addSwipeListeners(element, onSwipeLeft, onSwipeRight) {
 		}
 	}
 }
+
+// swap content of #currentYear for current year
+document.getElementById("currentYear").innerHTML = new Date().getFullYear()
